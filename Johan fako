@@ -1,0 +1,88 @@
+# Importujeme knižnicu PIL
+from PIL import Image, ImageDraw, ImageFilter
+
+# Vytvoríme nový obrázok s bielym pozadím
+width = 800 # Šírka obrázka v pixeloch
+height = 600 # Výška obrázka v pixeloch
+image = Image.new("RGB", (width, height), (255, 255, 255))
+
+# Vytvoríme objekt na kreslenie na obrázku
+draw = ImageDraw.Draw(image)
+
+# Definujeme zoznam farieb, ktoré budeme používať
+colors = ["red", "orange", "yellow", "green", "blue", "purple", "pink", "brown", "black"]
+
+# Definujeme zoznam tvarov, ktoré budeme kresliť
+shapes = ["circle", "square", "triangle", "star", "heart"]
+
+# Definujeme zoznam postáv, ktoré budeme kresliť
+characters = ["human", "animal", "monster", "angel", "devil"]
+
+# Definujeme zoznam scenérií, ktoré budeme kresliť
+scenarios = ["garden", "hell", "heaven", "forest", "city"]
+
+# Definujeme funkciu, ktorá náhodne vyberie prvok z zoznamu
+def random_choice(lst):
+  # Importujeme modul random
+  import random
+  # Vyberieme náhodný index z rozsahu dĺžky zoznamu
+  index = random.randrange(len(lst))
+  # Vrátime prvok na tomto indexe
+  return lst[index]
+
+# Definujeme funkciu, ktorá kreslí náhodný tvar na obrázku
+def draw_shape():
+  # Vyberieme náhodnú farbu
+  color = random_choice(colors)
+  # Vyberieme náhodný tvar
+  shape = random_choice(shapes)
+  # Vyberieme náhodné súradnice pre tvar
+  x1 = random.randrange(width)
+  y1 = random.randrange(height)
+  x2 = x1 + random.randrange(50, 200)
+  y2 = y1 + random.randrange(50, 200)
+  # Podľa tvaru vykreslíme príslušný útvar
+  if shape == "circle":
+    draw.ellipse((x1, y1, x2, y2), fill=color)
+  elif shape == "square":
+    draw.rectangle((x1, y1, x2, y2), fill=color)
+  elif shape == "triangle":
+    draw.polygon((x1, y1, x2, y1, (x1 + x2) // 2, y2), fill=color)
+  elif shape == "star":
+    draw.polygon((x1, y2, (x1 + x2) // 2, y1, x2, y2, x1, (y1 + y2) // 2, x2, (y1 + y2) // 2), fill=color)
+  elif shape == "heart":
+    draw.ellipse((x1, y1, x1 + (x2 - x1) // 2, y1 + (y2 - y1) // 2), fill=color)
+    draw.ellipse((x1 + (x2 - x1) // 2, y1, x2, y1 + (y2 - y1) // 2), fill=color)
+    draw.polygon((x1, y1 + (y2 - y1) // 4, (x1 + x2) // 2, y2, x2, y1 + (y2 - y1) // 4), fill=color)
+
+# Definujeme funkciu, ktorá kreslí náhodnú postavu na obrázku
+def draw_character():
+  # Vyberieme náhodnú farbu
+  color = random_choice(colors)
+  # Vyberieme náhodnú postavu
+  character = random_choice(characters)
+  # Vyberieme náhodné súradnice pre postavu
+  x1 = random.randrange(width)
+  y1 = random.randrange(height)
+  x2 = x1 + random.randrange(50, 200)
+  y2 = y1 + random.randrange(50, 200)
+  # Podľa postavy vykreslíme príslušný útvar
+  if character == "human":
+    # Kreslíme hlavu
+    draw.ellipse((x1 + (x2 - x1) // 4, y1, x1 + 3 * (x2 - x1) // 4, y1 + (y2 - y1) // 4), fill=color)
+    # Kreslíme telo
+    draw.rectangle((x1 + (x2 - x1) // 3, y1 + (y2 - y1) // 4, x1 + 2 * (x2 - x1) // 3, y1 + 3 * (y2 - y1) // 4), fill=color)
+    # Kreslíme ruky
+    draw.line((x1 + (x2 - x1) // 3, y1 + (y2 - y1) // 4, x1, y1 + (y2 - y1) // 2), fill=color, width=10)
+    draw.line((x1 + 2 * (x2 - x1) // 3, y1 + (y2 - y1) // 4, x2, y1 + (y2 - y1) // 2), fill=color, width=10)
+    # Kreslíme nohy
+    draw.line((x1 + (x2 - x1) // 3, y1 + 3 * (y2 - y1) // 4, x1 + (x2 - x1) // 4, y2), fill=color, width=10)
+    draw.line((x1 + 2 * (x2 - x1) // 3, y1 + 3 * (y2 - y1) // 4, x1 + 3 * (x2 - x1) // 4, y2), fill=color, width=10)
+  elif character == "animal":
+    # Kreslíme hlavu
+    draw.ellipse((x1 + (x2 - x1) // 4, y1, x1 + 3 * (x2 - x1) // 4, y1 + (y2 - y1) // 4), fill=color)
+    # Kreslíme telo
+    draw.ellipse((x1, y1 + (y2 - y1) // 4, x2, y1 + 3 * (y2 - y1) // 4), fill=color)
+    # Kreslíme uši
+    draw.polygon((x1 + (x2 - x1) // 4, y1, x1 + (x2 - x1) // 8, y1 - (y2 - y1) // 8, x1 + 3 * (x2 - x1) // 16, y1 + (y2 - y1) // 16), fill=color)
+    draw.polygon((x1 + 3 * (x2 - x1) // 4, y1, x1 + 7 * (x2 - x1) // 8, y1
